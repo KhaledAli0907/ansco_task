@@ -424,7 +424,7 @@ php artisan schedule:work
 After seeding, you can login with:
 
 -   **Admin Email**: `admin@anasco.com`
--   **Admin Password**: `password`
+-   **Admin Password**: `Passw0rd!`
 
 ## 📁 Project Structure
 
