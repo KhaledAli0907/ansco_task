@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace App\Services\Implementations\Payments;
 
-use App\Actions\CalculateSubscribtionEndDateAction;
+use App\Actions\CalculateSubscriptionEndDateAction;
 use App\Actions\Payments\GeneratePaymobTokenAction;
 use App\Models\Order;
 use App\Models\UserSubscription;
@@ -148,7 +148,7 @@ class PaymobPaymentService extends BasePaymentService implements PaymentGatewayI
                 if ($subscription) {
                     Log::info('Subscription found', ['subscription_id' => $subscription->id]);
                     $startDate = Carbon::now();
-                    $endDate = app(CalculateSubscribtionEndDateAction::class)->handle(
+                    $endDate = app(CalculateSubscriptionEndDateAction::class)->handle(
                         startDate: $startDate,
                         duration: $subscription->duration,
                         durationType: $subscription->duration_type

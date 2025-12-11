@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
 
             // Foreign Keys
-            $table->foreignUuid('subscription_id')->constrained('subscribtions')->onDelete('cascade');
+            $table->foreignUuid('subscription_id')->constrained('subscriptions')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 
             // Paymob Order Details

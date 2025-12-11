@@ -15,7 +15,7 @@ return new class extends Migration {
 
             // Foreign Keys
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignUuid('subscription_id')->constrained('subscribtions')->onDelete('cascade');
+            $table->foreignUuid('subscription_id')->constrained('subscriptions')->onDelete('cascade');
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
 
             // Subscription Period

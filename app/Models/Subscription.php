@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Subscribtion extends Model
+class Subscription extends Model
 {
     use HasFactory, SoftDeletes, HasUuids;
 
@@ -71,3 +71,4 @@ class Subscribtion extends Model
         return $this->hasMany(UserSubscription::class, 'subscription_id');
     }
 }
+

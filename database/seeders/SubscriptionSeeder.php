@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Subscribtion;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
-class SubscribtionSeeder extends Seeder
+class SubscriptionSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -52,7 +52,7 @@ class SubscribtionSeeder extends Seeder
         ];
 
         foreach ($subscriptions as $subscription) {
-            Subscribtion::create([
+            Subscription::create([
                 ...$subscription,
                 'created_by' => $admin->id,
             ]);
@@ -61,3 +61,4 @@ class SubscribtionSeeder extends Seeder
         $this->command->info('Created 3 monthly subscriptions successfully!');
     }
 }
+

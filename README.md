@@ -54,7 +54,7 @@ This repository contains a **Subscription Management System API** built with Lar
 **Clean Architecture Implementation:**
 
 -   **Service Layer**: Business logic encapsulated in dedicated services with interfaces
--   **Action Pattern**: Single-purpose action classes for complex operations (e.g., `GeneratePaymobTokenAction`, `CalculateSubscribtionEndDateAction`)
+-   **Action Pattern**: Single-purpose action classes for complex operations (e.g., `GeneratePaymobTokenAction`, `CalculateSubscriptionEndDateAction`)
 -   **Form Request Validation**: Dedicated validation classes for input sanitization
 -   **Trait Pattern**: Reusable traits for common functionality (e.g., `MakesHttpRequests`, `ResponseTrait`)
 -   **Repository Pattern**: Data access abstraction through service interfaces
@@ -431,7 +431,7 @@ After seeding, you can login with:
 ```
 app/
 ├── Actions/
-│   ├── CalculateSubscribtionEndDateAction.php
+│   ├── CalculateSubscriptionEndDateAction.php
 │   └── Payments/
 │       └── GeneratePaymobTokenAction.php
 ├── Console/
@@ -452,21 +452,21 @@ app/
 │   └── ExpireSubscriptionsJob.php
 ├── Models/
 │   ├── Order.php
-│   ├── Subscribtion.php
+│   ├── Subscription.php
 │   ├── User.php
 │   └── UserSubscription.php
 ├── Services/
 │   ├── Interfaces/
 │   │   ├── AuthInterface.php
 │   │   ├── PaymentGatewayInterface.php
-│   │   ├── SubscribtionInterface.php
+│   │   ├── SubscriptionInterface.php
 │   │   └── UserInterface.php
 │   └── Implementations/
 │       ├── AuthService.php
 │       ├── Payments/
 │       │   ├── BasePaymentService.php
 │       │   └── PaymobPaymentService.php
-│       ├── SubscribtionService.php
+│       ├── SubscriptionService.php
 │       └── UserService.php
 └── Traits/
     ├── MakesHttpRequests.php
@@ -484,7 +484,7 @@ database/
 └── seeders/
     ├── AdminUserSeeder.php
     ├── DatabaseSeeder.php
-    └── SubscribtionSeeder.php
+    └── SubscriptionSeeder.php
 
 routes/
 ├── api/
@@ -621,6 +621,49 @@ The following enhancements would significantly improve the system's performance,
 - Admin (all permissions)
 - Manager (subscription.*, user.view, payment.*)
 - User (subscription.view, payment.process)
+```
+
+### 3. JWT Authentication for Cross-Platform Compatibility
+
+**Current State**: The system uses Laravel Sanctum for API authentication, which is primarily designed for SPA (Single Page Application) and mobile applications with token-based authentication.
+
+**Proposed Improvement**: Implement JWT (JSON Web Token) authentication using packages like `tymon/jwt-auth` or `php-open-source-forever/laravel-jwt` for better compatibility across mobile and web platforms.
+
+**Benefits**:
+
+-   **Cross-Platform Compatibility**: JWT tokens work seamlessly across web browsers, mobile apps (iOS/Android), and desktop applications without platform-specific implementations
+-   **Stateless Authentication**: JWT tokens are self-contained and stateless, eliminating the need for server-side session storage and enabling better horizontal scaling
+-   **Mobile-First Design**: JWT is the industry standard for mobile app authentication, providing better integration with native mobile SDKs and frameworks
+-   **Token Refresh Mechanism**: Implement refresh tokens for enhanced security, allowing automatic token renewal without requiring user re-authentication
+-   **Third-Party Integration**: JWT tokens can be easily shared and validated across multiple services in a microservices architecture
+-   **Better Offline Support**: Mobile applications can validate token expiration locally before making API calls, improving user experience
+-   **Standardized Format**: JWT follows an open standard (RFC 7519), making it easier for frontend developers to implement authentication across different platforms
+
+**Implementation Approach**:
+
+-   Install and configure JWT authentication package (e.g., `tymon/jwt-auth`)
+-   Generate JWT tokens on login/registration instead of Sanctum tokens
+-   Implement token refresh endpoint for seamless token renewal
+-   Add token expiration and refresh token rotation for security
+-   Update middleware to validate JWT tokens instead of Sanctum tokens
+-   Configure token payload to include user ID, role, and necessary claims
+-   Update frontend/mobile clients to store and send JWT tokens in Authorization header
+-   Implement token blacklisting for logout functionality (optional, using Redis)
+
+**Example Token Structure**:
+
+```php
+// JWT Payload
+{
+  "sub": "user_id",
+  "iat": 1234567890,
+  "exp": 1234571490,
+  "role": "user",
+  "email": "user@example.com"
+}
+
+// Authorization Header
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
 ## 📄 License

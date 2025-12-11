@@ -5,7 +5,7 @@ namespace App\Actions;
 use Carbon\Carbon;
 
 
-class CalculateSubscribtionEndDateAction
+class CalculateSubscriptionEndDateAction
 {
     public function handle(Carbon $startDate, int $duration, string $durationType): Carbon
     {
@@ -17,3 +17,4 @@ class CalculateSubscribtionEndDateAction
         };
     }
 }
+

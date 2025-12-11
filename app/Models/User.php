@@ -55,7 +55,7 @@ class User extends Authenticatable
 
     public function subscriptions(): HasMany
     {
-        return $this->hasMany(Subscribtion::class, 'created_by');
+        return $this->hasMany(Subscription::class, 'created_by');
     }
 
     /**
