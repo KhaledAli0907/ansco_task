@@ -95,7 +95,6 @@ trait MakesHttpRequests
 -   Secure token-based authentication
 -   Configurable token expiration
 -   Proper token validation middleware
--   CSRF protection for web routes
 
 **Role-Based Access Control:**
 
@@ -109,12 +108,9 @@ trait MakesHttpRequests
 -   Comprehensive form request validation
 -   Strong password requirements (regex validation)
 -   Business rule validation (e.g., subscription status rules)
--   SQL injection prevention through Eloquent ORM
--   XSS protection through Laravel's built-in escaping
 
 **Payment Security:**
 
--   HMAC verification for payment callbacks
 -   Secure payment token generation
 -   Transaction status validation
 -   Order integrity checks
@@ -347,76 +343,6 @@ Authorization: Bearer {token}
     -   Bulk update for efficiency
     -   Prevents overlapping executions
 
-## 📊 Technical Highlights
-
-### Advanced Features Implemented
-
-**Subscription Management:**
-
-```php
-// Automatic end date calculation
-class CalculateSubscribtionEndDateAction
-{
-    public function handle(int $duration, string $durationType): Carbon
-    {
-        return match($durationType) {
-            'month' => now()->addMonths($duration),
-            'year' => now()->addYears($duration),
-            default => now()->addDays($duration),
-        };
-    }
-}
-```
-
-**Payment Service Architecture:**
-
-```php
-// Extensible payment gateway interface
-interface PaymentGatewayInterface
-{
-    public function sendPayment(array $data): array;
-    public function callBack(array $data): void;
-}
-
-// Paymob implementation
-class PaymobPaymentService implements PaymentGatewayInterface
-{
-    // Complete Paymob API integration
-    // Order creation, payment key generation, callback handling
-}
-```
-
-**User Subscription Management:**
-
-```php
-// Automatic subscription expiration on new purchase
-UserSubscription::where('user_id', $userId)
-    ->where('status', 'active')
-    ->update(['status' => 'expired']);
-
-// Create new active subscription
-UserSubscription::create([
-    'user_id' => $userId,
-    'subscription_id' => $subscriptionId,
-    'order_id' => $orderId,
-    'start_date' => now(),
-    'end_date' => $endDate,
-    'status' => 'active',
-]);
-```
-
-**Role-Based Access Control:**
-
-```php
-// Admin check in controllers
-if (!auth()->user()->isAdmin()) {
-    return response()->json(['message' => 'Unauthorized'], 403);
-}
-
-// User scope filtering
-User::with('userSubscriptions')->users()->get();
-```
-
 ## 🚀 Setup & Usage
 
 ### Prerequisites
@@ -450,10 +376,8 @@ DB_PASSWORD=your_password
 DB_COLLATION=utf8mb4_unicode_ci
 
 # Configure Paymob credentials in .env
-PAYMOB_API_KEY=your_api_key
-PAYMOB_INTEGRATION_ID=your_integration_id
-PAYMOB_IFRAME_ID=your_iframe_id
-PAYMOB_HMAC_SECRET=your_hmac_secret
+PAYMOB_API_KEY=your_api_key # Test key included in the config
+PAYMOB_BASE_URL=https://accept.paymob.com/
 
 # Run migrations
 php artisan migrate
@@ -494,7 +418,6 @@ php artisan schedule:work
 ### Access Points
 
 -   **API Base**: `http://localhost:8000/api`
--   **Health Check**: `http://localhost:8000/up`
 
 ### Default Credentials
 
@@ -596,10 +519,6 @@ routes/
 
 -   **Password Hashing**: Bcrypt password hashing
 -   **Strong Password Policy**: Regex validation for password strength
--   **HMAC Verification**: Secure payment callback validation
--   **SQL Injection Prevention**: Eloquent ORM with parameter binding
--   **XSS Protection**: Laravel's built-in output escaping
--   **CSRF Protection**: Token-based CSRF protection
 -   **Rate Limiting**: Throttling on payment endpoints
 
 ## 🎯 Technical Skills Demonstrated
@@ -608,7 +527,7 @@ routes/
 
 -   **Laravel Framework**: Advanced usage of Laravel 11 features
 -   **RESTful API Design**: Proper HTTP methods and status codes
--   **Authentication/Authorization**: Laravel Sanctum and RBAC implementation
+-   **Authentication/Authorization**: Laravel Sanctum
 -   **Database Design**: Normalized schema with proper relationships
 -   **Validation**: Comprehensive input validation and sanitization
 -   **Payment Gateway Integration**: Complete Paymob API integration
@@ -636,11 +555,6 @@ While the current implementation fully satisfies all requirements, potential imp
 -   **Stripe Integration**: Add Stripe as an alternative payment gateway
 -   **Email Notifications**: Send emails on subscription activation/expiration
 -   **Subscription Renewal**: Automatic renewal functionality
--   **Analytics Dashboard**: Subscription metrics and reporting
--   **Multi-currency Support**: Enhanced currency handling
--   **Subscription Upgrades/Downgrades**: Plan change functionality
--   **Trial Periods**: Free trial subscription support
--   **Webhook Retry Logic**: Enhanced webhook reliability
 
 ## 🚀 Room for Improvement
 
@@ -707,37 +621,6 @@ The following enhancements would significantly improve the system's performance,
 - Admin (all permissions)
 - Manager (subscription.*, user.view, payment.*)
 - User (subscription.view, payment.process)
-```
-
-## 📝 Environment Variables
-
-Required environment variables:
-
-```env
-# Application
-APP_NAME="Anasco Subscription System"
-APP_ENV=local
-APP_KEY=
-APP_DEBUG=true
-APP_URL=http://localhost:8000
-
-# Database
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=anasco
-DB_USERNAME=root
-DB_PASSWORD=
-DB_COLLATION=utf8mb4_unicode_ci
-
-# Paymob
-PAYMOB_API_KEY=your_api_key
-PAYMOB_INTEGRATION_ID=your_integration_id
-PAYMOB_IFRAME_ID=your_iframe_id
-PAYMOB_HMAC_SECRET=your_hmac_secret
-
-# Queue
-QUEUE_CONNECTION=database
 ```
 
 ## 📄 License
