@@ -494,14 +494,13 @@ php artisan schedule:work
 ### Access Points
 
 -   **API Base**: `http://localhost:8000/api`
--   **Health Check**: `http://localhost:8000/up`
 
 ### Default Credentials
 
 After seeding, you can login with:
 
 -   **Admin Email**: `admin@anasco.com`
--   **Admin Password**: `password`
+-   **Admin Password**: `Passw0rd!`
 
 ## 📁 Project Structure
 
