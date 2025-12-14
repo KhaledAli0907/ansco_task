@@ -22,7 +22,7 @@ class PaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'subscription_id' => 'required|uuid|exists:subscribtions,id',
+            'subscription_id' => 'required|uuid|exists:subscriptions,id',
             'amount_cents' => 'required|integer|min:1',
             'currency' => 'required|string|in:EGP,USD,EUR',
             'shipping_data' => 'required|array',

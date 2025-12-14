@@ -11,6 +11,7 @@ class Subscription extends Model
 {
     use HasFactory, SoftDeletes, HasUuids;
 
+    protected $table = 'subscriptions';
     protected $fillable = [
         'name',
         'description',
